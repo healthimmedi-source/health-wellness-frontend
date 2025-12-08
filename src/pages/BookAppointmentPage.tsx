@@ -35,7 +35,8 @@ const BookAppointmentPage = () => {
     setErrorMsg(null);
 
     try {
-      const res = await fetch("http://localhost:4000/api/appointments", {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${API_BASE}http://localhost:4000/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
