@@ -20,8 +20,8 @@ const DoctorsPage = () => {
       try {
         setLoading(true);
         setError(null);
-
-        const res = await fetch("http://localhost:4000/api/doctors");
+        const API_BASE = import.meta.env.VITE_API_BASE_URL;
+        const res = await fetch(`${API_BASE}/api/doctors`);
         if (!res.ok) {
           throw new Error("Failed to fetch doctors");
         }
