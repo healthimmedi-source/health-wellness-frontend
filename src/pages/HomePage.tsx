@@ -5,7 +5,7 @@ const HomePage = () => (
       <div className="flex-1 space-y-5">
         <div className="flex items-center gap-3">
           <img
-            src="/doctor-symbol.jpg"
+            src="/immedihealth-logo.jpg"
             alt="ImmediHealth and Wellness Center logo"
             className="h-12 w-auto md:h-16"
           />
