@@ -15,8 +15,21 @@ const App = () => {
       {/* Navbar */}
       <header className="bg-white shadow">
         <nav className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="text-xl font-semibold text-teal-700">
-            WellnessCare
+          {/* Brand: logo + name */}
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src="/immedihealth-logo.jpg"
+              alt="ImmediHealth Logo"
+              className="h-10 w-auto"
+            />
+            <div className="leading-tight">
+              <span className="block text-xl font-semibold text-slate-900">
+                Immedi<span className="text-sky-700">Health</span>
+              </span>
+              <span className="block text-xs uppercase tracking-wide text-slate-500">
+                And Wellness Center
+              </span>
+            </div>
           </Link>
 
           <div className="flex gap-3 text-sm items-center">
@@ -98,7 +111,7 @@ const App = () => {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 mt-8">
         <div className="max-w-6xl mx-auto px-4 py-4 text-sm">
-          © {new Date().getFullYear()} WellnessCare Center
+          © {new Date().getFullYear()} ImmediHealth and Wellness Center
         </div>
       </footer>
     </div>
