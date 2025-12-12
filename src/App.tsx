@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PatientDashboardPage from "./pages/PatientDashboardPage";
 import BookAppointmentPage from "./pages/BookAppointmentPage";
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "./auth/AuthContext";
 
 const App = () => {
   const { user, logout } = useAuth();
