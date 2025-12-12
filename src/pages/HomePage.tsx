@@ -7,7 +7,7 @@ const HomePage = () => {
       {/* HERO SECTION */}
       <div className="relative w-full h-[380px] rounded-xl overflow-hidden shadow-md mb-10">
         <img
-          src="/homepage-clinic-hero.jpg"   // put your image in public/ folder
+          src="/homepage-clinic-hero3.jpg"   // put your image in public/ folder
           // OR use a URL:
           // src="https://images.unsplash.com/photo-1580281657521-67b13e03d75f?auto=format&fit=crop&w=1400&q=80"
           alt="Clinic and Doctors"

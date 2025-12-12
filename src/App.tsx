@@ -111,7 +111,7 @@ const App = () => {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 mt-8">
         <div className="max-w-6xl mx-auto px-4 py-4 text-sm">
-          © {new Date().getFullYear()} ImmediHealth and Wellness Center
+          © {new Date().getFullYear()} ImmediHealth and Wellness Center                            Created by AK Innovations
         </div>
       </footer>
     </div>

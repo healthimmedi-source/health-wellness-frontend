@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -9,7 +9,7 @@ const LoginPage = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    await login({email, password});
     // later we'll navigate to dashboard or home
     alert("Logged in (fake) – navbar should now show your email.");
   };

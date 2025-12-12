@@ -1,16 +1,16 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 const RegisterPage = () => {
-  const { register } = useAuth();
+  const { signup } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await register(fullName, email, password);
+    await signup({fullName, email, password});
     alert("Registered (fake) – navbar should now show your email.");
   };
 
