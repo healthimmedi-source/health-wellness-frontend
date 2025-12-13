@@ -62,6 +62,14 @@ const LoginPage = () => {
         </Link>
       </p>
 
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700 disabled:opacity-50"
+      >
+        {loading ? "Signing in..." : "Sign in"}
+      </button>
+      
       {/* 🔵 Google Sign In */}
       <button
         onClick={handleGoogleLogin}
