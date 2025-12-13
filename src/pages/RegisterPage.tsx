@@ -1,22 +1,81 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 const RegisterPage = () => {
-  const { signup } = useAuth();
+  const { signup, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await signup({fullName, email, password});
-    alert("Registered (fake) – navbar should now show your email.");
+    setErrorMsg(null);
+    setLoading(true);
+
+    try {
+      await signup({ fullName, email, password });
+      // redirect wherever you want after signup
+      navigate("/"); // or "/doctors" or "/dashboard"
+    } catch (err: any) {
+      setErrorMsg(err?.message ?? "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onGoogleSignup = async () => {
+    setErrorMsg(null);
+    setLoading(true);
+
+    try {
+      await loginWithGoogle();
+      navigate("/"); // or "/doctors" etc.
+    } catch (err: any) {
+      setErrorMsg(err?.message ?? "Google sign-in failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white shadow rounded-lg p-6">
-      <h1 className="text-xl font-semibold mb-4">Create your account</h1>
+      <h1 className="text-xl font-semibold mb-1">Create your account</h1>
+      <p className="text-sm text-slate-600 mb-4">
+        Already have an account?{" "}
+        <Link className="text-teal-700 font-medium hover:underline" to="/login">
+          Login
+        </Link>
+      </p>
+
+      {errorMsg && (
+        <div className="mb-4 rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+          {errorMsg}
+        </div>
+      )}
+
+      {/* Google sign up */}
+      <button
+        type="button"
+        onClick={onGoogleSignup}
+        disabled={loading}
+        className="w-full rounded-md border bg-white py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+      >
+        Continue with Google
+      </button>
+
+      <div className="my-4 flex items-center gap-3">
+        <div className="h-px flex-1 bg-slate-200" />
+        <span className="text-xs text-slate-500">OR</span>
+        <div className="h-px flex-1 bg-slate-200" />
+      </div>
+
       <form className="space-y-4" onSubmit={onSubmit}>
         <div>
           <label className="block text-sm font-medium mb-1">Full name</label>
@@ -29,6 +88,7 @@ const RegisterPage = () => {
             placeholder="John Doe"
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <input
@@ -40,6 +100,7 @@ const RegisterPage = () => {
             placeholder="you@example.com"
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium mb-1">Password</label>
           <input
@@ -51,11 +112,13 @@ const RegisterPage = () => {
             placeholder="••••••••"
           />
         </div>
+
         <button
           type="submit"
-          className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700"
+          disabled={loading}
+          className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700 disabled:opacity-60"
         >
-          Sign up
+          {loading ? "Creating account..." : "Sign up"}
         </button>
       </form>
     </div>
