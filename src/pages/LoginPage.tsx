@@ -12,18 +12,15 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  {error && (
-    <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
-      {error}
-    </div>
-  )}
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
 
     try {
+      setLoading(true);
       await login({email, password});
+      navigate("/");
     } catch (err: any) {
       const code = err?.code;
 
@@ -62,14 +59,6 @@ const LoginPage = () => {
         </Link>
       </p>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700 disabled:opacity-50"
-      >
-        {loading ? "Signing in..." : "Sign in"}
-      </button>
-      
       {/* 🔵 Google Sign In */}
       <button
         onClick={handleGoogleLogin}
@@ -91,6 +80,11 @@ const LoginPage = () => {
 
       {/* Email / Password */}
       <form className="space-y-4" onSubmit={onSubmit}>
+        {error && (
+        <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+          {error}
+        </div>
+        )}
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <input

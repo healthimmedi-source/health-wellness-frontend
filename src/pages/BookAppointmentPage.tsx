@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import type { FormEvent } from "react";
+import { useAuth } from "../auth/AuthContext";
 
 type RouteParams = {
   doctorId: string;
@@ -18,6 +19,12 @@ const BookAppointmentPage = () => {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const { token } = useAuth();
+
+  if (!token) {
+    setErrorMsg("You must be logged in to book an appointment");
+    return;
+  }
   if (!doctorId) {
     return (
       <div className="max-w-xl mx-auto">
@@ -38,7 +45,9 @@ const BookAppointmentPage = () => {
       const API_BASE = import.meta.env.VITE_API_BASE_URL;
       const res = await fetch(`${API_BASE}/api/appointments`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+            Authorization:`Bearer ${token}`,
+         },
         body: JSON.stringify({
           doctorId: Number(doctorId),
           date,
@@ -47,6 +56,7 @@ const BookAppointmentPage = () => {
           notes,
           patientName,
           patientEmail,
+          status
         }),
       });
 

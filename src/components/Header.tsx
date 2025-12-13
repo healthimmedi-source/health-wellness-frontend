@@ -28,6 +28,14 @@ export default function Header() {
           <Link className="text-slate-700 hover:text-slate-900" to="/doctors">
             Doctors
           </Link>
+        
+          {/* ✅ NEW: Book Appointment */}
+          <Link
+            to={`/book/4`}
+            className="rounded-md bg-teal-600 px-3 py-1.5 font-medium text-white hover:bg-teal-700"
+          >
+            Book Appointment
+          </Link>
 
           {!user ? (
             <>

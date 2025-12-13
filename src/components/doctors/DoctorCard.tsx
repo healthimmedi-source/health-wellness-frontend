@@ -1,59 +1,49 @@
+// src/components/doctors/DoctorCard.tsx
 import { Link } from "react-router-dom";
 
-export interface Doctor {
-  id: number;
-  fullName: string;
-  specialization: string;
-  experienceYears?: number;
-  consultationFee?: number;
-  clinicName?: string;
-  clinicCity?: string;
-}
+type Doctor = {
+  id?: string;
+  _id?: string;
+  name: string;
+  specialty: string;
+  experience: number;
+  location: string;
+  price: number;
+};
 
-interface DoctorCardProps {
-  doctor: Doctor;
-}
+export default function DoctorCard({ doctor }: { doctor: Doctor }) {
+  const doctorId = doctor.id ?? doctor._id; // supports either field
 
-const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   return (
-    <div className="bg-white shadow-sm rounded-lg p-4 flex flex-col justify-between">
-      <div>
-        <h3 className="text-lg font-semibold text-slate-900">
-          {doctor.fullName}
-        </h3>
-        <p className="text-sm text-teal-700 font-medium">
-          {doctor.specialization}
-        </p>
-        {(doctor.clinicName || doctor.clinicCity) && (
-          <p className="text-xs text-slate-500 mt-1">
-            {doctor.clinicName}
-            {doctor.clinicCity ? ` • ${doctor.clinicCity}` : ""}
-          </p>
-        )}
-        {doctor.experienceYears != null && (
-          <p className="text-xs text-slate-500 mt-1">
-            {doctor.experienceYears}+ years of experience
-          </p>
-        )}
-      </div>
+    <div className="rounded-xl border bg-white p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-semibold">{doctor.name}</h3>
+          <div className="text-sm text-slate-600">{doctor.specialty}</div>
+          <div className="mt-2 text-sm text-slate-600">
+            {doctor.experience} years experience
+          </div>
+          <div className="text-sm text-slate-600">{doctor.location}</div>
+          <div className="mt-3 font-medium">₹{doctor.price} / consultation</div>
+        </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        {doctor.consultationFee != null && (
-          <p className="text-sm text-slate-800 font-semibold">
-            ₹ {doctor.consultationFee}
-            <span className="text-xs text-slate-500"> / session</span>
-          </p>
+        {doctorId ? (
+          <Link
+            to={`/book/${doctorId}`}
+            className="rounded-md bg-teal-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-teal-700"
+          >
+            Book now
+          </Link>
+        ) : (
+          <button
+            disabled
+            className="rounded-md bg-slate-300 px-3 py-1.5 text-sm font-medium text-white"
+            title="Doctor ID missing"
+          >
+            Book now
+          </button>
         )}
-
-        <Link
-          to={`/book/${doctor.id}`}
-          className="px-3 py-1.5 text-xs rounded-md bg-teal-600 text-white hover:bg-teal-700"
-        >
-          Book now
-        </Link>
       </div>
     </div>
   );
-};
-
-export default DoctorCard;
+}
