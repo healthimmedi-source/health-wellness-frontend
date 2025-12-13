@@ -1,48 +1,68 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setErrorMsg(null);
     setLoading(true);
-
     try {
       await login({ email, password });
-      navigate("/dashboard");
+      navigate("/");
     } catch (err: any) {
-      setErrorMsg(err?.message ?? "Login failed");
+      alert(err.message || "Login failed");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      navigate("/");
+    } catch (err: any) {
+      alert(err.message || "Google login failed");
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto bg-white shadow rounded-lg p-6">
-      <h1 className="text-xl font-semibold mb-1">Login</h1>
-      <p className="text-sm text-slate-600 mb-4">
-        New here?{" "}
-        <Link className="text-teal-700 font-medium hover:underline" to="/signup">
-          Create an account
+      <h1 className="text-xl font-semibold mb-2">Welcome back</h1>
+      <p className="text-sm text-gray-600 mb-4">
+        Don’t have an account?{" "}
+        <Link to="/signup" className="text-teal-600 hover:underline">
+          Sign up
         </Link>
       </p>
 
-      {errorMsg && (
-        <div className="mb-4 rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
-          {errorMsg}
-        </div>
-      )}
+      {/* 🔵 Google Sign In */}
+      <button
+        onClick={handleGoogleLogin}
+        className="w-full mb-4 flex items-center justify-center gap-2 border rounded-md py-2 text-sm font-medium hover:bg-gray-50"
+      >
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google"
+          className="w-5 h-5"
+        />
+        Continue with Google
+      </button>
 
+      <div className="flex items-center my-4">
+        <div className="flex-1 h-px bg-gray-200" />
+        <span className="px-3 text-xs text-gray-400">OR</span>
+        <div className="flex-1 h-px bg-gray-200" />
+      </div>
+
+      {/* Email / Password */}
       <form className="space-y-4" onSubmit={onSubmit}>
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
@@ -73,7 +93,7 @@ const LoginPage = () => {
           disabled={loading}
           className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700 disabled:opacity-60"
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? "Signing in..." : "Login"}
         </button>
       </form>
     </div>
