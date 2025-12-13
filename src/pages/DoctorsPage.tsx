@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 
 type Doctor = {
   id: number;
-  fullName: string;
+  user: {fullName: string};
   specialization: string;
   experienceYears: number | null;
   consultationFee: number | null;
-  clinicName: string | null;
-  clinicCity: string | null;
+  clinic: {name: string | null, city: string | null};
+  
 };
 
 const DoctorsPage = () => {
@@ -86,7 +86,7 @@ const DoctorsPage = () => {
           >
             <div>
               <h2 className="text-lg font-semibold text-slate-900">
-                {doc.fullName}
+                {doc.user?.fullName}
               </h2>
               <p className="text-sm text-teal-700 font-medium">
                 {doc.specialization}
@@ -97,8 +97,8 @@ const DoctorsPage = () => {
                   : "Experience info not available"}
               </p>
               <p className="text-xs text-slate-500 mt-1">
-                {doc.clinicName
-                  ? `${doc.clinicName} — ${doc.clinicCity ?? ""}`
+                {doc.clinic.name
+                  ? `${doc.clinic.name} — ${doc.clinic.city ?? ""}`
                   : "Clinic info not available"}
               </p>
             </div>
