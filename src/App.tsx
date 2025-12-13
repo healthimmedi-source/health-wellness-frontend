@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 
+import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import DoctorsPage from "./pages/DoctorsPage";
 import BookAppointmentPage from "./pages/BookAppointmentPage";
@@ -21,23 +22,26 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/doctors" element={<DoctorsPage />} />
-      <Route path="/book/:doctorId" element={<BookAppointmentPage />} />
+      {/* Layout wraps all routes that should show the header */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/doctors" element={<DoctorsPage />} />
+        <Route path="/book/:doctorId" element={<BookAppointmentPage />} />
 
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<RegisterPage />} />
 
-      <Route
-        path="/dashboard"
-        element={
-          <RequireAuth>
-            <PatientDashboardPage />
-          </RequireAuth>
-        }
-      />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <PatientDashboardPage />
+            </RequireAuth>
+          }
+        />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
     </Routes>
   );
 }
