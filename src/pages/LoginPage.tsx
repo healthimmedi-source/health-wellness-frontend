@@ -10,15 +10,34 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  {error && (
+    <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+      {error}
+    </div>
+  )}
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
+
     try {
-      await login({ email, password });
-      navigate("/");
+      await login({email, password});
     } catch (err: any) {
-      alert(err.message || "Login failed");
+      const code = err?.code;
+
+      if (
+        code === "auth/invalid-credential" ||
+        code === "auth/wrong-password" ||
+        code === "auth/user-not-found"
+      ) {
+        setError("Wrong email or password");
+      } else if (code === "auth/too-many-requests") {
+        setError("Too many failed attempts. Please try again later.");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
