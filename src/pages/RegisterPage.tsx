@@ -4,15 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 const RegisterPage = () => {
-  const { signup, loginWithGoogle } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,24 +20,9 @@ const RegisterPage = () => {
 
     try {
       await signup({ fullName, email, password });
-      // redirect wherever you want after signup
-      navigate("/"); // or "/doctors" or "/dashboard"
+      navigate("/dashboard");
     } catch (err: any) {
-      setErrorMsg(err?.message ?? "Signup failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onGoogleSignup = async () => {
-    setErrorMsg(null);
-    setLoading(true);
-
-    try {
-      await loginWithGoogle();
-      navigate("/"); // or "/doctors" etc.
-    } catch (err: any) {
-      setErrorMsg(err?.message ?? "Google sign-in failed. Please try again.");
+      setErrorMsg(err?.message ?? "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -59,22 +43,6 @@ const RegisterPage = () => {
           {errorMsg}
         </div>
       )}
-
-      {/* Google sign up */}
-      <button
-        type="button"
-        onClick={onGoogleSignup}
-        disabled={loading}
-        className="w-full rounded-md border bg-white py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
-      >
-        Continue with Google
-      </button>
-
-      <div className="my-4 flex items-center gap-3">
-        <div className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs text-slate-500">OR</span>
-        <div className="h-px flex-1 bg-slate-200" />
-      </div>
 
       <form className="space-y-4" onSubmit={onSubmit}>
         <div>
@@ -118,8 +86,15 @@ const RegisterPage = () => {
           disabled={loading}
           className="w-full rounded-md bg-teal-600 text-white py-2 text-sm font-medium hover:bg-teal-700 disabled:opacity-60"
         >
-          {loading ? "Creating account..." : "Sign up"}
+          {loading ? "Creating..." : "Sign up"}
         </button>
+
+        <Link
+          to="/login"
+          className="block w-full text-center rounded-md border border-slate-300 bg-white py-2 text-sm font-medium hover:bg-slate-50"
+        >
+          Go to Login
+        </Link>
       </form>
     </div>
   );
