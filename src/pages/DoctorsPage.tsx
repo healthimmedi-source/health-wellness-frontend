@@ -6,7 +6,7 @@ type Doctor = {
   specialization: string;
   experienceYears: number | null;
   consultationFee: number | null;
-  clinic: {name: string | null, city: string | null};
+  clinic: {name: string | null, city: string | null, state: string | null};
   
 };
 
@@ -98,7 +98,7 @@ const DoctorsPage = () => {
               </p>
               <p className="text-xs text-slate-500 mt-1">
                 {doc.clinic.name
-                  ? `${doc.clinic.name} — ${doc.clinic.city ?? ""}`
+                  ? `${doc.clinic.name} — ${doc.clinic.city ?? ""} , ${doc.clinic.state}`
                   : "Clinic info not available"}
               </p>
             </div>
